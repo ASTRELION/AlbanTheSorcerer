@@ -1,0 +1,66 @@
+commit 40fdd0918de0582e47753e45a68a5b1d3e287f1d
+Author: Ashton Nelson <20118782+ASTRELION@users.noreply.github.com>
+Date:   Wed Sep 5 18:07:33 2018 -0500
+
+    Set theme jekyll-theme-slate
+
+commit 2996a5e43daf799bf8ad8875a56fc7ae39eaa2c8
+Author: Ashton Nelson <20118782+ASTRELION@users.noreply.github.com>
+Date:   Wed Sep 5 18:05:51 2018 -0500
+
+    Update README.md
+
+commit ae042f264899138e414fa782f7c95140772ca4ab
+Author: Ashton Nelson <20118782+ASTRELION@users.noreply.github.com>
+Date:   Wed Sep 5 18:05:34 2018 -0500
+
+    Update README.md
+
+commit c73d09667a1324f7a24a8e85a6bd29013ddca94c
+Author: Ashton <nelson.ashton98@gmail.com>
+Date:   Wed Sep 5 18:01:21 2018 -0500
+
+    Modified gitignore
+
+commit 9cfb85dff31dcea014f14f9893e2da2c8c691821
+Author: Ashton <nelson.ashton98@gmail.com>
+Date:   Wed Sep 5 17:59:52 2018 -0500
+
+    Created Makefile and basic board printout
+
+commit cb28033fb3d91b223f17a75fa9fe3def4dd324f5
+Author: Ashton <nelson.ashton98@gmail.com>
+Date:   Wed Sep 5 16:19:14 2018 -0500
+
+    Added main
+
+commit b638a1a64e1c95bcf46b3387a967c26e1fa14147
+Merge: 6f4d40a 897f900
+Author: Ashton <nelson.ashton98@gmail.com>
+Date:   Tue Sep 4 19:57:51 2018 -0500
+
+    Merge branch 'master' of github.com:ASTRELION/AlbanTheSorcerer
+
+commit 6f4d40a284e590479724b6886bd7024d2f1889ea
+Author: Ashton <nelson.ashton98@gmail.com>
+Date:   Tue Sep 4 19:44:32 2018 -0500
+
+    Initial empty commit
+
+commit 897f900d802aededbf0b230e9da7328112ca412a
+Author: Ashton Nelson <20118782+ASTRELION@users.noreply.github.com>
+Date:   Tue Sep 4 19:38:20 2018 -0500
+
+    Update README.md
+
+commit e20d1fb566ae2086784c5f876769853ada0b2573
+Author: Ashton Nelson <20118782+ASTRELION@users.noreply.github.com>
+Date:   Tue Sep 4 18:58:42 2018 -0500
+
+    Update .gitignore
+
+commit 33c0759c5b860c7eff0f3a1615a3b7091105587a
+Author: Ashton Nelson <20118782+ASTRELION@users.noreply.github.com>
+Date:   Tue Sep 4 18:56:29 2018 -0500
+
+    Initial commit

@@ -1,3 +1,46 @@
+commit 63d7fbdd5a559c077fee159c7e56accc2c62d3e0
+Author: Ashton <nelson.ashton98@gmail.com>
+Date:   Wed Sep 5 21:43:23 2018 -0500
+
+    Redimentary room generation added. Intersections not correctly implemented yet.
+
+commit 76e81577122e35c0f82477a7766ef3c6bf16e50e
+Author: Ashton <nelson.ashton98@gmail.com>
+Date:   Wed Sep 5 18:23:03 2018 -0500
+
+    Updated README.md
+
+commit a58db082021c12865292c36e02690760901e8f61
+Author: Ashton <nelson.ashton98@gmail.com>
+Date:   Wed Sep 5 18:22:19 2018 -0500
+
+    Updated README.md
+
+commit 244219df7a896d4d6e1f461787c63d346c16a8b2
+Merge: 8294c52 e8dd511
+Author: Ashton <nelson.ashton98@gmail.com>
+Date:   Wed Sep 5 18:19:36 2018 -0500
+
+    Merge branch 'master' of github.com:ASTRELION/AlbanTheSorcerer
+
+commit 8294c52b41dfd2e9c5059834eefcd2abb8a439d3
+Author: Ashton <nelson.ashton98@gmail.com>
+Date:   Wed Sep 5 18:19:20 2018 -0500
+
+    README update
+
+commit e8dd511bf6059aebcbcadce4260368998b1c4e2d
+Author: Ashton Nelson <20118782+ASTRELION@users.noreply.github.com>
+Date:   Wed Sep 5 18:16:30 2018 -0500
+
+    Delete Makefile~
+
+commit c28a491f83c08738f7c847a0148571ec4e6616fc
+Author: Ashton <nelson.ashton98@gmail.com>
+Date:   Wed Sep 5 18:14:56 2018 -0500
+
+    Added CHANGELOG
+
 commit 40fdd0918de0582e47753e45a68a5b1d3e287f1d
 Author: Ashton Nelson <20118782+ASTRELION@users.noreply.github.com>
 Date:   Wed Sep 5 18:07:33 2018 -0500

@@ -7,8 +7,8 @@ struct room
 {
   int x;
   int y;
-  int width;
-  int length;
+  int dx;
+  int dy;
 };
 
 void addRoomsToBoard();
@@ -26,7 +26,7 @@ struct room rooms[20];
 
 int main(int argc, char *argv[])
 {
-  printf("~\t\t    *~*~*~*~* [ Alban The Sorcerer ] *~*~*~*~*\n");
+  printf("~\t\t    *~*~*~*~*~{ Alban The Sorcerer }~*~*~*~*~*\n");
 
   // Initialize dungeon to blank
   int i, j;
@@ -61,7 +61,7 @@ void addRoomsToBoard()
   int fails = 0;
   int rms = 0;
   
-  while (fails < 20 && rms < 10)
+  while (fails < 1 && rms < 10)
   {
     bool f = true;
 
@@ -78,8 +78,8 @@ void addRoomsToBoard()
       int r;
       for (r = 0; r < 20; r++)
       {
-        if ((x + dx >= rooms[r].x - 1 && x <= rooms[r].x + dx + 1) &&
-	    (y + dy >= rooms[r].y - 1 && y <= rooms[r].y + dy + 1))
+        if ((x <= rooms[r].x + rooms[r].dx && rooms[r].x <= x + dx + 1) &&
+	    (y + dy >= rooms[r].y && rooms[r].y + rooms[r].dy >= y))
 	{
 	  validRoom = false;
 	  break;
@@ -99,8 +99,8 @@ void addRoomsToBoard()
 
 	rooms[rms].x = x;
 	rooms[rms].y = y;
-	rooms[rms].width = dx;
-	rooms[rms].length = dy;
+	rooms[rms].dx = dx;
+	rooms[rms].dy = dy;
 
 	f = false;
 	rms++;

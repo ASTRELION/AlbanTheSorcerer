@@ -12,17 +12,20 @@ struct room
 };
 
 void addRoomsToBoard();
+void generateCooridors();
 void printBoard();
 
 #define SIZE_Y 21
 #define SIZE_X 80
+#define MAX_ROOMS 10
 #define BOARD_EDGE '-'
 #define BOARD_ROCK ' '
 #define BOARD_ROOM '.'
 #define BOARD_PATH '#'
 
 char board[SIZE_Y][SIZE_X];
-struct room rooms[20];
+struct room rooms[MAX_ROOMS];
+int numRooms = 0;
 
 int main(int argc, char *argv[])
 {
@@ -46,6 +49,7 @@ int main(int argc, char *argv[])
   }
 
   addRoomsToBoard();
+  generateCooridors();
   printBoard();
 
   printf("~\n~\n");
@@ -59,9 +63,8 @@ void addRoomsToBoard()
   srand(seed);
 
   int fails = 0;
-  int rms = 0;
   
-  while (fails < 1 && rms < 10)
+  while (fails < 5 && numRooms < MAX_ROOMS)
   {
     bool f = true;
 
@@ -75,8 +78,9 @@ void addRoomsToBoard()
 
       bool validRoom = true;
 
+      // Check if room is a valid placement
       int r;
-      for (r = 0; r < 20; r++)
+      for (r = 0; r < MAX_ROOMS; r++)
       {
         if ((x <= rooms[r].x + rooms[r].dx && rooms[r].x <= x + dx + 1) &&
 	    (y + dy >= rooms[r].y && rooms[r].y + rooms[r].dy >= y))
@@ -86,6 +90,7 @@ void addRoomsToBoard()
 	}
       }
 
+      // Add room to dungeon
       if (validRoom && x + dx < SIZE_X - 2 && y + dy < SIZE_Y - 2)
       {
 	int i, j;
@@ -97,19 +102,53 @@ void addRoomsToBoard()
 	  }
 	}
 
-	rooms[rms].x = x;
-	rooms[rms].y = y;
-	rooms[rms].dx = dx;
-	rooms[rms].dy = dy;
+	rooms[numRooms].x = x;
+	rooms[numRooms].y = y;
+	rooms[numRooms].dx = dx;
+	rooms[numRooms].dy = dy;
 
 	f = false;
-	rms++;
+	numRooms++;
 	break;
       }
     }
 
     if (f)
       fails++;
+  }
+}
+
+void generateCooridors()
+{
+  int i;
+  for (i = 0; i < numRooms - 1; i++)
+  {
+    int x1 = rooms[i].x;
+    int y1 = rooms[i].y;
+    int x2 = rooms[i + 1].x;
+    int y2 = rooms[i + 1].y;
+    
+    while (x1 != x2)
+    {
+      if (board[y1][x1] != BOARD_ROOM)
+	board[y1][x1] = BOARD_PATH;
+
+      if (x1 > x2)
+	x1--;
+      else
+	x1++;
+    }
+
+    while (y1 != y2)
+    {
+      if (board[y1][x1] != BOARD_ROOM)
+	board[y1][x1] = BOARD_PATH;
+
+      if (y1 > y2)
+	y1--;
+      else
+	y1++;
+    }
   }
 }
 

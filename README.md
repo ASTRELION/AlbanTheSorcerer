@@ -1,32 +1,33 @@
 <img src="/AlbanBannerSCALED.png" title="Alban The Sorcerer Banner">
-A terminal-based dungeon crawler in C/C++
+A terminal-based dungeon crawler in C/C++ by [Ashton Nelson](https://github.com/ASTRELION)
 
-## Assignment 1.01 : Dungeon Generation
+### Assignment README Info
+#### Assignment 1.01 : Dungeon Generation
 A 80x21 dungeon is generated with random rooms that are fully connected by paths. The rooms are a min size of 3x2, intersection of rooms is implemented so that rooms never intersect and have a minimum of 1 unit of space between them.
 
-## Assignment 1.02
--
+#### Assignment 1.02
+*Not completed*
 
-## Assignment 1.03
--
+#### Assignment 1.03
+*Not completed*
 
-## Assignment 1.04
--
+#### Assignment 1.04
+*Not completed*
 
-## Assignment 1.05
--
+#### Assignment 1.05
+*Not completed*
 
-## Assignment 1.06
--
+#### Assignment 1.06
+*Not completed*
 
-## Assignment 1.07
--
+#### Assignment 1.07
+*Not completed*
 
-## Assignment 1.08
--
+#### Assignment 1.08
+*Not completed*
 
-## Assignment 1.09
--
+#### Assignment 1.09
+*Not completed*
 
 # Features
 - Poorly drawn pixel art

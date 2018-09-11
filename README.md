@@ -1,4 +1,4 @@
-<img src="/AlbanBanner.png" title="Alban The Sorcerer Banner">
+<img src="/AlbanBannerSCALED.png" title="Alban The Sorcerer Banner">
 A terminal-based dungeon crawler in C/C++
 
 ## Assignment 1.01 : Dungeon Generation

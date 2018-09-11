@@ -1,32 +1,32 @@
 ![](AlbanBannerSCALED.png)
-A terminal-based dungeon crawler in C/C++ by [Ashton Nelson](https://github.com/ASTRELION).
+*A terminal-based dungeon crawler in C/C++ by [Ashton Nelson](https://github.com/ASTRELION).*
 
 ### Assignment README Info
 #### Assignment 1.01 : Dungeon Generation
 A 80x21 dungeon is generated with random rooms that are fully connected by paths. The rooms are a min size of 3x2, intersection of rooms is implemented so that rooms never intersect and have a minimum of 1 unit of space between them.
 
-#### Assignment 1.02
+#### Assignment 1.02 : Dungeon Load/Save
 *Completed by Wednesday, September 12th, 2018*
 
-#### Assignment 1.03
+#### Assignment 1.03 : Path Finding
 *Completed by Wednesday, September 19th, 2018*
 
-#### Assignment 1.04
+#### Assignment 1.04 : NPCs
 *Completed by Wednesday, September 26th, 2018*
 
-#### Assignment 1.05
+#### Assignment 1.05 : Curses
 *Completed by Wednesday, October 3rd, 2018*
 
-#### Assignment 1.06
+#### Assignment 1.06 : Fog of War
 *Completed by Wednesday, October 10th, 2018*
 
-#### Assignment 1.07
+#### Assignment 1.07 : Monster Loader
 *Completed by Wednesday, October 17th, 2018*
 
-#### Assignment 1.08
+#### Assignment 1.08 : Load Monsters, Hit Points
 *Completed by Wednesday, October 24th, 2018*
 
-#### Assignment 1.09
+#### Assignment 1.09 : Item Pick-Up & Updated Mechanics
 *Completed by Wednesday, October 31st, 2018*
 
 # Features

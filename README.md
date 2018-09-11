@@ -1,6 +1,8 @@
 # Alban The Sorcerer
 A terminal-based dungeon crawler in C/C++
 
+![alt text](/Alban32.png?raw=true "Alban")
+
 ## Assignment 1.01 : Dungeon Generation
 A 80x21 dungeon is generated with random rooms that are fully connected by paths. The rooms are a min size of 3x2, intersection of rooms is implemented so that rooms never intersect and have a minimum of 1 unit of space between them.
 

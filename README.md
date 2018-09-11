@@ -1,4 +1,4 @@
-# <img src="/Alban32.png") Alban The Sorcerer
+<img src="/AlbanBanner.png" title="Alban The Sorcerer Banner">
 A terminal-based dungeon crawler in C/C++
 
 ## Assignment 1.01 : Dungeon Generation
@@ -27,6 +27,11 @@ A 80x21 dungeon is generated with random rooms that are fully connected by paths
 
 ## Assignment 1.09
 -
+
+# Features
+- Poorly drawn pixel art
+- Bland game mechanics
+- Cutting-edge terminal graphics
 
 # How to run
 Run `make` in `/AlbanTheSorcerer` to compile project  

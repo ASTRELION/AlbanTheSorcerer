@@ -1,5 +1,5 @@
-<img src="/AlbanBannerSCALED.png" title="Alban The Sorcerer Banner">
-A terminal-based dungeon crawler in C/C++ by [Ashton Nelson](https://github.com/ASTRELION)
+![](AlbanBannerSCALED.png)
+A terminal-based dungeon crawler in C/C++ by [Ashton Nelson](https://github.com/ASTRELION).
 
 ### Assignment README Info
 #### Assignment 1.01 : Dungeon Generation

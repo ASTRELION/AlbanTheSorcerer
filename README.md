@@ -6,7 +6,7 @@
 A 80x21 dungeon is generated with random rooms that are fully connected by paths. The rooms are a min size of 3x2, intersection of rooms is implemented so that rooms never intersect and have a minimum of 1 unit of space between them.
 
 #### Assignment 1.02 : Dungeon Load/Save
-Dungeon is able to be loaded from dungeon file located in ~/.rlg327/dungeon. File is loaded and displayed correctly. Save functionality still to be implemented; switch may be used but will not perform any action. Player is not displayed.
+Dungeon is able to be loaded from dungeon file with switch --load, located in ~/.rlg327/dungeon. File is loaded and displayed correctly. Dungeon can also be saved with switch --save and the file is saved in the same directory as loaded from, overwriting any exisiting files. File semantics, version, size, character position, and board configuration are correctly loaded and saved. Code will be reorganized at a later date to be more effective.
 
 #### Assignment 1.03 : Path Finding
 *Completed by Wednesday, September 19th, 2018*

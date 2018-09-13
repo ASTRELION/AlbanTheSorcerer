@@ -23,10 +23,10 @@
 
 struct room
 {
-  int x;
-  int y;
-  int dx;
-  int dy;
+  uint8_t x;
+  uint8_t y;
+  uint8_t dx;
+  uint8_t dy;
 };
 
 struct dungeon
@@ -34,7 +34,9 @@ struct dungeon
   int numRooms;
   struct room rooms[ROOM_MAX_NUM];
   char terrain[DNGN_SIZE_Y][DNGN_SIZE_X];
-  int hardness[DNGN_SIZE_Y][DNGN_SIZE_X];
+  uint8_t hardness[DNGN_SIZE_Y][DNGN_SIZE_X];
+  uint8_t pcX;
+  uint8_t pcY;
 };
 
 void initializeDungeon();
@@ -58,7 +60,6 @@ int main(int argc, char *argv[])
 
   bool save = false;
   bool load = false;
-  FILE *f;
 
   // Parse arguments
   if (argc > 1)
@@ -84,6 +85,7 @@ int main(int argc, char *argv[])
 
   if (load) // Load dungeon from dungeon file in ~/.rlg327/dungeon
   {
+    FILE *f;
     char *path = malloc(strlen(getenv("HOME")) + strlen("/.rlg327/dungeon") + 1);
     strcpy(path, getenv("HOME"));
     strcat(path, "/.rlg327/dungeon");
@@ -115,6 +117,8 @@ int main(int argc, char *argv[])
     fread(&pcX, 1, 1, f);
     int8_t pcY;
     fread(&pcY, 1, 1, f);
+    dungeon.pcX = pcX;
+    dungeon.pcY = pcY;
 
     // Fill hardness array
     int i, j;
@@ -169,9 +173,61 @@ int main(int argc, char *argv[])
     generatePaths();
   }
 
-  if (save) // Save dungeon to file in ~/.rlg327/dungeon
+  // Save dungeon to file in ~/.rlg327/dungeon
+  if (save) 
   {
-     // Save dungeon to file
+    FILE *f;
+    char *path = malloc(strlen(getenv("HOME")) + strlen("/.rlg327/dungeon") + 1);
+    strcpy(path, getenv("HOME"));
+    strcat(path, "/.rlg327/dungeon");
+    
+    f = fopen(path, "w");
+
+    if (!f)
+    {
+      fprintf(stderr, "Failed to open %s\n", path);
+      return -1;
+    }
+
+    char semantic[12] = "RLG327-F2018";
+    fwrite(semantic, 12, 1, f);
+
+    uint32_t version = 0;
+    version = htobe32(version);
+    fwrite(&version, 4, 1, f);
+
+    uint32_t fileSize = 1702 + (dungeon.numRooms * 4);
+    fileSize = htobe32(fileSize);
+    fwrite(&fileSize, 4, 1, f);
+
+    fwrite(&dungeon.pcX, 1, 1, f);
+    fwrite(&dungeon.pcY, 1, 1, f);
+
+    int i, j;
+    for (i = 0; i < DNGN_SIZE_Y; i++)
+    {
+      for (j = 0; j < DNGN_SIZE_X; j++)
+      {
+	uint8_t h = dungeon.hardness[i][j];
+	fwrite(&h, 1, 1, f);
+      }
+    }
+
+    int r;
+    for (r = 0; r < dungeon.numRooms; r++)
+    {
+      uint8_t x = dungeon.rooms[r].x;
+      uint8_t y = dungeon.rooms[r].y;
+      uint8_t dx = dungeon.rooms[r].dx;
+      uint8_t dy = dungeon.rooms[r].dy;
+
+      fwrite(&x, 1, 1, f);
+      fwrite(&y, 1, 1, f);
+      fwrite(&dx, 1, 1, f);
+      fwrite(&dy, 1, 1, f);
+    }
+
+    free(path);
   }
 
   displayDungeon();

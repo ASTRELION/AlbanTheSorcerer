@@ -1,3 +1,15 @@
+commit a6defeba1415fed05ec86febac7d828213f86570
+Author: Ashton <nelson.ashton98@gmail.com>
+Date:   Wed Sep 12 23:24:52 2018 -0500
+
+    Added save functionality
+
+commit c41700831519afab084d9566dc571095ef2714b4
+Author: Ashton <nelson.ashton98@gmail.com>
+Date:   Wed Sep 12 21:57:09 2018 -0500
+
+    Updated README and CHANGELOG
+
 commit ae3e6ceb23b1d581d400da375277315c98f45a33
 Author: Ashton <nelson.ashton98@gmail.com>
 Date:   Wed Sep 12 21:54:11 2018 -0500

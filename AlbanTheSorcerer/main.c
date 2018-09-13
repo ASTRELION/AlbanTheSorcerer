@@ -2,6 +2,10 @@
 #include <stdlib.h>
 #include <time.h>
 #include <stdbool.h>
+#include <math.h>
+#include <string.h>
+#include <stdint.h>
+#include <endian.h>
 
 #define DNGN_SIZE_Y 21 // Max dungeon height
 #define DNGN_SIZE_X 80 // Max dungeon width
@@ -36,6 +40,8 @@ struct dungeon
 void initializeDungeon();
 void generateRooms();
 void generatePaths();
+int distance(struct room room1, struct room room2);
+void paintRooms();
 void displayDungeon();
 
 struct dungeon dungeon = {0};
@@ -50,10 +56,124 @@ int main(int argc, char *argv[])
 {
   printf("~\t\t    *~*~*~*~*~{ Alban The Sorcerer }~*~*~*~*~*\n");
 
-  initializeDungeon();
+  bool save = false;
+  bool load = false;
+  FILE *f;
 
-  generateRooms();
-  generatePaths();
+  // Parse arguments
+  if (argc > 1)
+  {
+    if (strcmp(argv[1], "--save") == 0)
+    {
+      save = true;
+    }
+    else if (strcmp(argv[1], "--load") == 0)
+    {
+      load = true;
+    }
+
+    if (argc > 2 && strcmp(argv[2], "--save") == 0)
+    {
+      save = true;
+    }
+    else if (argc > 2 && strcmp(argv[2], "--load") == 0)
+    {
+      load = true;
+    } 
+  }
+
+  if (load) // Load dungeon from dungeon file in ~/.rlg327/dungeon
+  {
+    char *path = malloc(strlen(getenv("HOME")) + strlen("/.rlg327/dungeon") + 1);
+    strcpy(path, getenv("HOME"));
+    strcat(path, "/.rlg327/dungeon");
+    
+    f = fopen(path, "r");
+
+    if (!f)
+    {
+      fprintf(stderr, "Failed to open %s\n", path);
+      return -1;
+    }
+
+    // Get semantic
+    char semantic[12];
+    fread(&semantic, 12, 1, f);
+
+    // Get version
+    uint32_t version;
+    fread(&version, 4, 1, f);
+    version = be32toh(version);
+
+    // Get file size
+    uint32_t fileSize;
+    fread(&fileSize, 4, 1, f);
+    fileSize = be32toh(fileSize);
+
+    // Get (x,y) of player
+    int8_t pcX;
+    fread(&pcX, 1, 1, f);
+    int8_t pcY;
+    fread(&pcY, 1, 1, f);
+
+    // Fill hardness array
+    int i, j;
+    for (i = 0; i < DNGN_SIZE_Y; i++)
+    {
+      for (j = 0; j < DNGN_SIZE_X; j++)
+      {
+	uint8_t h;
+	fread(&h, 1, 1, f);
+	dungeon.hardness[i][j] = h;
+	
+	if (h == 0)
+	{
+	  dungeon.terrain[i][j] = DNGN_PATH;
+	}
+	else if (h > 0 && h < 255)
+	{
+	  dungeon.terrain[i][j] = DNGN_ROCK;
+	}
+	else if (h == 255)
+	{
+	  dungeon.terrain[i][j] = DNGN_EDGE;
+	}
+      }
+    }
+ 
+    // Calculate num rooms
+    int numRooms = (fileSize - 1702) / 4;
+    dungeon.numRooms = numRooms;
+    
+    // Generate rooms
+    int r = 0;
+    while (!feof(f) && r < numRooms)
+    {
+      fread(&dungeon.rooms[r].x, 1, 1, f);
+      fread(&dungeon.rooms[r].y, 1, 1, f);
+      fread(&dungeon.rooms[r].dx, 1, 1, f);
+      fread(&dungeon.rooms[r].dy, 1, 1, f);
+
+      r++;
+    }
+
+    paintRooms();
+
+    free(path);
+  }
+  else // Create a new dungeon
+  {
+    initializeDungeon();
+
+    generateRooms();
+    generatePaths();
+  }
+
+  if (save) // Save dungeon to file in ~/.rlg327/dungeon
+  {
+     // Save dungeon to file
+  }
+
   displayDungeon();
 
   printf("~\n~\n");
@@ -131,12 +251,47 @@ void generateRooms()
       dungeon.rooms[dungeon.numRooms].dy = dy;
 
       dungeon.numRooms++;
-      //break;
     }
   }
 
-  // Sort rooms from smallX -> bigX, smallY -> bigY
-  
+  // Selection sort rooms in closest-to-previous order
+  int i;
+  for (i = 0; i < dungeon.numRooms - 1; i++)
+  {
+    int minIndex = i + 1;
+    int minDistance = distance(dungeon.rooms[i], dungeon.rooms[i + 1]);
+
+    int j;
+    for (j = i + 1; j < dungeon.numRooms; j++)
+    {
+      int dist = distance(dungeon.rooms[i], dungeon.rooms[j]);
+      if (dist < minDistance)
+      {
+	minDistance = dist;
+	minIndex = j;
+      }
+    }
+    
+    // Swap with lowest found
+    struct room tmp = (struct room){dungeon.rooms[i + 1].x, dungeon.rooms[i + 1].y,
+				    dungeon.rooms[i + 1].dx, dungeon.rooms[i + 1].dy};
+    dungeon.rooms[i + 1] = (struct room){dungeon.rooms[minIndex].x, dungeon.rooms[minIndex].y,
+				     dungeon.rooms[minIndex].dx, dungeon.rooms[minIndex].dy};
+    dungeon.rooms[minIndex] = (struct room){tmp.x, tmp.y,
+				     tmp.dx, tmp.dy};
+  }
+}
+
+// Find distance between center of rooms
+int distance(struct room room1, struct room room2)
+{
+  int x1 = room1.x + (room1.dx / 2);
+  int y1 = room1.y + (room1.dy / 2);
+  int x2 = room2.x + (room2.dx / 2);
+  int y2 = room2.y + (room2.dy / 2);
+
+  int dist = sqrt(pow(x2 - x1, 2) + pow(y2 - y1, 2));
+  return dist;
 }
 
 void generatePaths()
@@ -144,10 +299,10 @@ void generatePaths()
   int i;
   for (i = 0; i < dungeon.numRooms - 1; i++)
   {
-    int x1 = dungeon.rooms[i].x;
-    int y1 = dungeon.rooms[i].y;
-    int x2 = dungeon.rooms[i + 1].x;
-    int y2 = dungeon.rooms[i + 1].y;
+    int x1 = dungeon.rooms[i].x + (dungeon.rooms[i].dx / 2);
+    int y1 = dungeon.rooms[i].y + (dungeon.rooms[i].dy / 2);
+    int x2 = dungeon.rooms[i + 1].x + (dungeon.rooms[i + 1].dx / 2);
+    int y2 = dungeon.rooms[i + 1].y + (dungeon.rooms[i + 1].dy / 2);
     
     while (x1 != x2)
     {
@@ -175,6 +330,22 @@ void generatePaths()
 	y1--;
       else
 	y1++;
+    }
+  }
+}
+
+void paintRooms()
+{
+  int i;
+  for (i = 0; i < dungeon.numRooms; i++)
+  {
+    int y, x;
+    for (y = dungeon.rooms[i].y; y < dungeon.rooms[i].y + dungeon.rooms[i].dy; y++)
+    {
+      for (x = dungeon.rooms[i].x; x < dungeon.rooms[i].x + dungeon.rooms[i].dx; x++)
+      {
+	dungeon.terrain[y][x] = DNGN_ROOM;
+      }
     }
   }
 }

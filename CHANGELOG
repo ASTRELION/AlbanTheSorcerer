@@ -1,3 +1,183 @@
+commit ae3e6ceb23b1d581d400da375277315c98f45a33
+Author: Ashton <nelson.ashton98@gmail.com>
+Date:   Wed Sep 12 21:54:11 2018 -0500
+
+    Added load from dungeon file functionality (~/.rlg327/dungeon/)
+
+commit 82bfa0b9761213a639c96d99ed369fb2ac37d93f
+Author: Ashton <nelson.ashton98@gmail.com>
+Date:   Tue Sep 11 23:02:51 2018 -0500
+
+    Refactored to include structs for dungeons and rooms
+
+commit 64b998e0836657b2631cbda4cac58eff861a230f
+Author: Ashton Nelson <20118782+ASTRELION@users.noreply.github.com>
+Date:   Tue Sep 11 16:09:55 2018 -0500
+
+    Add files via upload
+
+commit 7321ce127639f6098ce24ea6b062a87c56317db9
+Author: Ashton Nelson <20118782+ASTRELION@users.noreply.github.com>
+Date:   Tue Sep 11 00:47:57 2018 -0500
+
+    Add files via upload
+
+commit 8b95b640661476bbed13b3784fa6ab0445b5b27a
+Author: Ashton Nelson <20118782+ASTRELION@users.noreply.github.com>
+Date:   Tue Sep 11 00:34:13 2018 -0500
+
+    Add files via upload
+
+commit 62af9214ef85bafe9ea1bd8e5c5f08eff64a930f
+Author: Ashton Nelson <20118782+ASTRELION@users.noreply.github.com>
+Date:   Tue Sep 11 00:28:14 2018 -0500
+
+    Add files via upload
+
+commit fffeb3afbb232abd36f0261cd8a0514ac14315a9
+Author: Ashton Nelson <20118782+ASTRELION@users.noreply.github.com>
+Date:   Tue Sep 11 00:27:28 2018 -0500
+
+    Add files via upload
+
+commit a89e5e749cb0f0ef23e469ce751ad486e54509ee
+Author: Ashton Nelson <20118782+ASTRELION@users.noreply.github.com>
+Date:   Tue Sep 11 00:26:27 2018 -0500
+
+    Add files via upload
+
+commit f61280ee81eff5c0ebb91068a4ef1d513638c8bd
+Author: Ashton Nelson <20118782+ASTRELION@users.noreply.github.com>
+Date:   Mon Sep 10 23:59:07 2018 -0500
+
+    Update README.md
+
+commit 8eddcf290750e93a4d918360913d1de1da60d3a2
+Author: Ashton Nelson <20118782+ASTRELION@users.noreply.github.com>
+Date:   Mon Sep 10 23:56:47 2018 -0500
+
+    Add files via upload
+
+commit d771e5981254ea7206e9e37e59b698768c3b972d
+Author: Ashton Nelson <20118782+ASTRELION@users.noreply.github.com>
+Date:   Mon Sep 10 23:56:09 2018 -0500
+
+    Update README.md
+
+commit 61b70d0343ead64c8df188d2d4035f6bb706719a
+Author: Ashton Nelson <20118782+ASTRELION@users.noreply.github.com>
+Date:   Mon Sep 10 23:52:51 2018 -0500
+
+    Add files via upload
+
+commit 781a18ef3095e3e52d56df3f52edfe928b53e4af
+Author: Ashton Nelson <20118782+ASTRELION@users.noreply.github.com>
+Date:   Mon Sep 10 23:49:50 2018 -0500
+
+    Update README.md
+
+commit b8a1ae0a0588fb9f42ab1ba5645d2c4cdbab8cb6
+Author: Ashton Nelson <20118782+ASTRELION@users.noreply.github.com>
+Date:   Mon Sep 10 23:44:24 2018 -0500
+
+    Update README.md
+
+commit 4c5368aee2169b93860071ef404241d38384f846
+Author: Ashton Nelson <20118782+ASTRELION@users.noreply.github.com>
+Date:   Mon Sep 10 23:38:01 2018 -0500
+
+    Add files via upload
+
+commit 93ba9f1af9055564d9946452d42a8a64243b4bad
+Author: Ashton Nelson <20118782+ASTRELION@users.noreply.github.com>
+Date:   Mon Sep 10 23:37:52 2018 -0500
+
+    Delete AlbanBannerSCALED.png
+
+commit ba6bc0e7dc310ee83703ce621d18b4700fb4b86b
+Author: Ashton Nelson <20118782+ASTRELION@users.noreply.github.com>
+Date:   Mon Sep 10 23:37:23 2018 -0500
+
+    Add files via upload
+
+commit 7a66b3fa82ea01a6b526d4173d2ea4e7d593618d
+Author: Ashton Nelson <20118782+ASTRELION@users.noreply.github.com>
+Date:   Mon Sep 10 23:36:39 2018 -0500
+
+    Add files via upload
+
+commit d204e3e951136e2598d9ff5430d388a2f014e920
+Author: Ashton Nelson <20118782+ASTRELION@users.noreply.github.com>
+Date:   Mon Sep 10 23:34:13 2018 -0500
+
+    Update README.md
+
+commit 190ac43163f10630ac40e6090e96e7d312b0d16b
+Author: Ashton Nelson <20118782+ASTRELION@users.noreply.github.com>
+Date:   Mon Sep 10 23:34:01 2018 -0500
+
+    Add files via upload
+
+commit e7aab2c0a630696c2e5d9f350ca18cb5eac034fd
+Author: Ashton Nelson <20118782+ASTRELION@users.noreply.github.com>
+Date:   Mon Sep 10 23:33:50 2018 -0500
+
+    Delete AlbanBanner.png
+
+commit 96317fbc002a0e3f97722a46fb22105b0a2467ca
+Author: Ashton Nelson <20118782+ASTRELION@users.noreply.github.com>
+Date:   Mon Sep 10 23:33:44 2018 -0500
+
+    Delete Alban32.png
+
+commit d86b6d73c989b648c91b708a002ceb69e7fbcd7e
+Author: Ashton Nelson <20118782+ASTRELION@users.noreply.github.com>
+Date:   Mon Sep 10 23:30:31 2018 -0500
+
+    Update README.md
+
+commit 320ea2e5f86479fa33d10ae6e8a6e77da5233bd3
+Author: Ashton Nelson <20118782+ASTRELION@users.noreply.github.com>
+Date:   Mon Sep 10 23:27:37 2018 -0500
+
+    Add files via upload
+
+commit 9ed4e782722ff8eec28f70510e3e6b46a19a54aa
+Author: Ashton Nelson <20118782+ASTRELION@users.noreply.github.com>
+Date:   Mon Sep 10 22:47:26 2018 -0500
+
+    Update README.md
+
+commit 89d3bb17c9835bdf2afbae8f07e11c692f7596ea
+Author: Ashton Nelson <20118782+ASTRELION@users.noreply.github.com>
+Date:   Mon Sep 10 22:46:17 2018 -0500
+
+    Update README.md
+
+commit a58de430a942001773ddcdd2eee7db4dcb542b2f
+Author: Ashton Nelson <20118782+ASTRELION@users.noreply.github.com>
+Date:   Mon Sep 10 22:45:10 2018 -0500
+
+    Add files via upload
+
+commit 495fbe4888f165324d7bd87b582666c8ef62c545
+Author: Ashton <nelson.ashton98@gmail.com>
+Date:   Thu Sep 6 00:54:09 2018 -0500
+
+    Added paths to connect rooms
+
+commit 34483403129919b25c6c8d5d703ad96e5b8e6443
+Author: Ashton <nelson.ashton98@gmail.com>
+Date:   Wed Sep 5 23:59:25 2018 -0500
+
+    Room intersection detenction properly implemented
+
+commit 98a70edc4015c7e3f355b73f39885cdf15dd0f71
+Author: Ashton <nelson.ashton98@gmail.com>
+Date:   Wed Sep 5 21:48:02 2018 -0500
+
+    Updated README and CHANGELOG
+
 commit 63d7fbdd5a559c077fee159c7e56accc2c62d3e0
 Author: Ashton <nelson.ashton98@gmail.com>
 Date:   Wed Sep 5 21:43:23 2018 -0500

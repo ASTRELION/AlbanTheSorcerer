@@ -1,3 +1,21 @@
+commit 2c577851e7e2e6aaed8215a7eb7834700c62ec99
+Author: Ashton <nelson.ashton98@gmail.com>
+Date:   Thu Sep 27 01:37:49 2018 -0500
+
+    Added rudimentary path finding for non-tunnelers
+
+commit e631ec6619e56445b75d4b020af44c1f926ff6f6
+Author: Ashton <nelson.ashton98@gmail.com>
+Date:   Tue Sep 25 20:52:47 2018 -0500
+
+    Separated dungeon actions into separate files
+
+commit b2fff59d068d6d035bd9abc26107932e7259f009
+Author: Ashton <nelson.ashton98@gmail.com>
+Date:   Wed Sep 12 23:25:32 2018 -0500
+
+    Updated CHANGELOG
+
 commit a6defeba1415fed05ec86febac7d828213f86570
 Author: Ashton <nelson.ashton98@gmail.com>
 Date:   Wed Sep 12 23:24:52 2018 -0500

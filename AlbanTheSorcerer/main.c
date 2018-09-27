@@ -8,6 +8,7 @@
 #include <endian.h>
 
 #include "dungeonManager.h" // Generate, save, load
+#include "gradientMap.h"
 #include "colors.h"
 
 struct dungeon dungeon = {};
@@ -59,6 +60,30 @@ int main(int argc, char *argv[])
   {
     saveDungeon();
   }
+
+  displayDungeon();
+
+  int i, j;
+  for (i = 1; i < DNGN_SIZE_Y - 1; i++)
+  {
+    for (j = 1; j < DNGN_SIZE_X - 1; j++)
+    {
+      pair_t p1, p2;
+      p1[1] = dungeon.pcY;
+      p1[0] = dungeon.pcX;
+      p2[1] = i;
+      p2[0] = j;
+
+      if (dungeon.hardness[i][j] == 0)
+      {
+	generateDistanceMap(&dungeon, p2, p1, dungeon.terrainDIST_NT);
+      }
+
+      //generateDistanceMap(&dungeon, p2, p1, dungeon.terrainDIST_T);
+    }
+  }
+
+  
 
   displayDungeon();
 

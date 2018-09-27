@@ -2,6 +2,7 @@
 # define DUNGEONMANAGER_H
 
 #include <stdint.h>
+#include <stdint.h>
 #include "colors.h"
 
 #define DNGN_SIZE_Y 21 // Max dungeon height
@@ -10,6 +11,7 @@
 #define DNGN_ROCK " " // Dungeon rock char
 #define DNGN_ROOM C_GREEN "." C_RESET // Dungeon room char
 #define DNGN_PATH C_YELLOW "#" C_RESET // Dungeon path char
+#define DNGN_PC C_CYAN "@" C_RESET
 
 #define ROOM_MIN_DX 3 // Min width
 #define ROOM_MIN_DY 2 // Min height
@@ -30,7 +32,9 @@ struct dungeon
 {
   int numRooms;
   struct room rooms[ROOM_MAX_NUM];
-  char *terrain[DNGN_SIZE_Y][DNGN_SIZE_X];
+  char *terrain[DNGN_SIZE_Y][DNGN_SIZE_X]; // Default
+  char terrainDIST_T[DNGN_SIZE_Y][DNGN_SIZE_X]; // Distance Tunneling
+  char terrainDIST_NT[DNGN_SIZE_Y][DNGN_SIZE_X]; // Distance Non-Tunneling
   uint8_t hardness[DNGN_SIZE_Y][DNGN_SIZE_X];
   uint8_t pcX;
   uint8_t pcY;

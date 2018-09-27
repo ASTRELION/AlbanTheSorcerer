@@ -17,6 +17,9 @@ void initializeDungeon()
   {
     for (j = 0; j < DNGN_SIZE_X; j++)
     {
+      dungeon.terrainDIST_NT[i][j] = ' ';
+      dungeon.terrainDIST_T[i][j] = ' ';
+
       // 255 '-' if an edge, 1 ' ' if rock
       if (i == 0 || i == DNGN_SIZE_Y - 1 ||
 	  j == 0 || j == DNGN_SIZE_X - 1)
@@ -232,6 +235,10 @@ void generateRooms()
     dungeon.rooms[minIndex] = (struct room){tmp.x, tmp.y,
 				     tmp.dx, tmp.dy};
   }
+
+  // Set PC starting position
+  dungeon.pcX = dungeon.rooms[0].x;
+  dungeon.pcY = dungeon.rooms[0].y;
 }
 
 // Find distance between center of rooms
@@ -320,6 +327,7 @@ void displayDungeon()
   }
 
   // Print characters
+  dungeon.terrain[dungeon.pcY][dungeon.pcX] = DNGN_PC;
   
   int i, j;
   for (i = 0; i < DNGN_SIZE_Y; i++)
@@ -327,6 +335,42 @@ void displayDungeon()
     for (j = 0; j < DNGN_SIZE_X; j++)
     {
       printf("%s", dungeon.terrain[i][j]);
+    }
+
+    printf("\n");
+  }
+
+  printf("Non-Tunnel Distance Map:\n");
+  for (i = 0; i < DNGN_SIZE_Y; i++)
+  {
+    for (j = 0; j < DNGN_SIZE_X; j++)
+    {
+      if (i == dungeon.pcY && j == dungeon.pcX)
+      {
+	printf("@");
+      }
+      else
+      {
+	printf("%c", dungeon.terrainDIST_NT[i][j]);
+      }
+    }
+
+    printf("\n");
+  }
+
+  printf("Tunnel Distance Map:\n");
+  for (i = 0; i < DNGN_SIZE_Y; i++)
+  {
+    for (j = 0; j < DNGN_SIZE_X; j++)
+    {
+      if (i == dungeon.pcY && j == dungeon.pcX)
+      {
+	printf("@");
+      }
+      else
+      {
+	printf("%c", dungeon.terrainDIST_T[i][j]);
+      }
     }
 
     printf("\n");

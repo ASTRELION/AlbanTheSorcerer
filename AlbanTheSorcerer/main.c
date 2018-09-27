@@ -61,7 +61,7 @@ int main(int argc, char *argv[])
     saveDungeon();
   }
 
-  displayDungeon();
+  //displayDungeon();
 
   int i, j;
   for (i = 1; i < DNGN_SIZE_Y - 1; i++)
@@ -79,7 +79,7 @@ int main(int argc, char *argv[])
 	generateDistanceMap(&dungeon, p2, p1, dungeon.terrainDIST_NT);
       }
 
-      //generateDistanceMap(&dungeon, p2, p1, dungeon.terrainDIST_T);
+      generateDistanceMap(&dungeon, p2, p1, dungeon.terrainDIST_T);
     }
   }
 

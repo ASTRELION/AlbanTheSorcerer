@@ -9,7 +9,7 @@ A 80x21 dungeon is generated with random rooms that are fully connected by paths
 Dungeon is able to be loaded from dungeon file with switch --load, located in ~/.rlg327/dungeon. File is loaded and displayed correctly. Dungeon can also be saved with switch --save and the file is saved in the same directory as loaded from, overwriting any exisiting files. File semantics, version, size, character position, and board configuration are correctly loaded and saved. Code will be reorganized at a later date to be more effective.
 
 #### Assignment 1.03 : Path Finding
-Finds the shorted path to every point on the map by using Jeremy's algorithm. DOes not find tunneling path yet.
+Finds the shorted path to every point on the map by using Jeremy's algorithm. Finds tunneling monster path incorrectly.
 
 #### Assignment 1.04 : NPCs
 *Completed by Wednesday, September 26th, 2018*

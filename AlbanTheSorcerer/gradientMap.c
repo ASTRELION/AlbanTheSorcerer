@@ -7,26 +7,44 @@
 #include "gradientMap.h"
 #include "heap.h"
 
-static int32_t corridor_path_cmp(const void *key, const void *with)
+typedef struct path {
+  heap_node_t *hn;
+  uint8_t pos[2];
+} path_t;
+
+static int32_t dist_cmp(const void *key, const void *with) 
 {
-  return ((corridor_path_t *) key)->cost - ((corridor_path_t *) with)->cost;
+  return ((int32_t) dungeon.mapNoTunnel[((path_t *) key)->pos[dim_y]]
+                                        [((path_t *) key)->pos[dim_x]] -
+          (int32_t) dungeon.mapNoTunnel[((path_t *) with)->pos[dim_y]]
+                                        [((path_t *) with)->pos[dim_x]]);
 }
 
-void generateDistanceMap(struct dungeon *d, pair_t from, pair_t to, char mapping[DNGN_SIZE_Y][DNGN_SIZE_X])
+static int32_t tunnel_cmp(const void *key, const void *with) 
 {
-  static corridor_path_t path[DNGN_SIZE_Y][DNGN_SIZE_X], *p;
+  return ((int32_t) dungeon.mapTunnel[((path_t *) key)->pos[dim_y]]
+                                      [((path_t *) key)->pos[dim_x]] -
+          (int32_t) dungeon.mapTunnel[((path_t *) with)->pos[dim_y]]
+                                      [((path_t *) with)->pos[dim_x]]);
+}
+
+void genMapNoTunnel(struct dungeon *d)
+{
+  static corridor_path_t p[DNGN_SIZE_Y][DNGN_SIZE_X], *c;
   static uint32_t initialized = 0;
   heap_t h;
   uint32_t x, y;
 
   if (!initialized) 
   {
+    //dungeon = d;
+
     for (y = 0; y < DNGN_SIZE_Y; y++) 
     {
       for (x = 0; x < DNGN_SIZE_X; x++) 
       {
-        path[y][x].pos[dim_y] = y;
-        path[y][x].pos[dim_x] = x;
+        p[y][x].pos[dim_y] = y;
+        p[y][x].pos[dim_x] = x;
       }
     }
 
@@ -37,13 +55,125 @@ void generateDistanceMap(struct dungeon *d, pair_t from, pair_t to, char mapping
   {
     for (x = 0; x < DNGN_SIZE_X; x++) 
     {
-      path[y][x].cost = INT_MAX;
+      dungeon.mapNoTunnel[y][x] = 255;
     }
   }
 
-  path[from[dim_y]][from[dim_x]].cost = 0;
+  dungeon.mapNoTunnel[dungeon.pcY][dungeon.pcX] = 0;
 
-  heap_init(&h, corridor_path_cmp, NULL);
+  heap_init(&h, dist_cmp, NULL);
+
+  for (y = 0; y < DNGN_SIZE_Y; y++) 
+  {
+    for (x = 0; x < DNGN_SIZE_X; x++) 
+    {
+      if (dungeon.hardness[y][x] == 0)
+      {
+        p[y][x].hn = heap_insert(&h, &p[y][x]);
+      } 
+    }
+  }
+  
+  while ((c = heap_remove_min(&h))) 
+  {
+    c->hn = NULL;
+
+    // Up left
+    if ((p[c->pos[dim_y] - 1][c->pos[dim_x] - 1].hn) && 
+	(dungeon.mapNoTunnel[c->pos[dim_y] - 1][c->pos[dim_x] - 1] > dungeon.mapNoTunnel[c->pos[dim_y]][c->pos[dim_x]] + 1))
+    {
+      dungeon.mapNoTunnel[c->pos[dim_y] - 1][c->pos[dim_x] - 1] = dungeon.mapNoTunnel[c->pos[dim_y]][c->pos[dim_x]] + 1;
+      heap_decrease_key_no_replace(&h, p[c->pos[dim_y] - 1][c->pos[dim_x] - 1].hn);
+    }
+    // Up
+    if ((p[c->pos[dim_y] - 1][c->pos[dim_x]].hn) &&
+        (dungeon.mapNoTunnel[c->pos[dim_y] - 1][c->pos[dim_x]] > dungeon.mapNoTunnel[c->pos[dim_y]][c->pos[dim_x]] + 1)) 
+    {
+      dungeon.mapNoTunnel[c->pos[dim_y] - 1][c->pos[dim_x]] = dungeon.mapNoTunnel[c->pos[dim_y]][c->pos[dim_x]] + 1;
+      heap_decrease_key_no_replace(&h, p[c->pos[dim_y] - 1][c->pos[dim_x]    ].hn);
+    }
+    // Up Right
+    if ((p[c->pos[dim_y] - 1][c->pos[dim_x] + 1].hn) &&
+        (dungeon.mapNoTunnel[c->pos[dim_y] - 1][c->pos[dim_x] + 1] > dungeon.mapNoTunnel[c->pos[dim_y]][c->pos[dim_x]] + 1)) 
+    {
+      dungeon.mapNoTunnel[c->pos[dim_y] - 1][c->pos[dim_x] + 1] = dungeon.mapNoTunnel[c->pos[dim_y]][c->pos[dim_x]] + 1;
+      heap_decrease_key_no_replace(&h, p[c->pos[dim_y] - 1][c->pos[dim_x] + 1].hn);
+    }
+    // Left
+    if ((p[c->pos[dim_y]][c->pos[dim_x] - 1].hn) &&
+        (dungeon.mapNoTunnel[c->pos[dim_y]][c->pos[dim_x] - 1] > dungeon.mapNoTunnel[c->pos[dim_y]][c->pos[dim_x]] + 1))
+    {
+      dungeon.mapNoTunnel[c->pos[dim_y]][c->pos[dim_x] - 1] = dungeon.mapNoTunnel[c->pos[dim_y]][c->pos[dim_x]] + 1;
+      heap_decrease_key_no_replace(&h, p[c->pos[dim_y]][c->pos[dim_x] - 1].hn);
+    }
+    // Right
+    if ((p[c->pos[dim_y]][c->pos[dim_x] + 1].hn) &&
+        (dungeon.mapNoTunnel[c->pos[dim_y]][c->pos[dim_x] + 1] > dungeon.mapNoTunnel[c->pos[dim_y]][c->pos[dim_x]] + 1)) 
+    {
+      dungeon.mapNoTunnel[c->pos[dim_y]][c->pos[dim_x] + 1] = dungeon.mapNoTunnel[c->pos[dim_y]][c->pos[dim_x]] + 1;
+      heap_decrease_key_no_replace(&h, p[c->pos[dim_y]    ][c->pos[dim_x] + 1].hn);
+    }
+    // Down Left
+    if ((p[c->pos[dim_y] + 1][c->pos[dim_x] - 1].hn) &&
+        (dungeon.mapNoTunnel[c->pos[dim_y] + 1][c->pos[dim_x] - 1] > dungeon.mapNoTunnel[c->pos[dim_y]][c->pos[dim_x]] + 1)) 
+    {
+      dungeon.mapNoTunnel[c->pos[dim_y] + 1][c->pos[dim_x] - 1] = dungeon.mapNoTunnel[c->pos[dim_y]][c->pos[dim_x]] + 1;
+      heap_decrease_key_no_replace(&h, p[c->pos[dim_y] + 1][c->pos[dim_x] - 1].hn);
+    }
+    // Down
+    if ((p[c->pos[dim_y] + 1][c->pos[dim_x]].hn) &&
+        (dungeon.mapNoTunnel[c->pos[dim_y] + 1][c->pos[dim_x]] > dungeon.mapNoTunnel[c->pos[dim_y]][c->pos[dim_x]] + 1))
+    {
+      dungeon.mapNoTunnel[c->pos[dim_y] + 1][c->pos[dim_x]] = dungeon.mapNoTunnel[c->pos[dim_y]][c->pos[dim_x]] + 1;
+      heap_decrease_key_no_replace(&h, p[c->pos[dim_y] + 1][c->pos[dim_x]].hn);
+    }
+    // Down Right
+    if ((p[c->pos[dim_y] + 1][c->pos[dim_x] + 1].hn) &&
+        (dungeon.mapNoTunnel[c->pos[dim_y] + 1][c->pos[dim_x] + 1] > dungeon.mapNoTunnel[c->pos[dim_y]][c->pos[dim_x]] + 1)) 
+    {
+      dungeon.mapNoTunnel[c->pos[dim_y] + 1][c->pos[dim_x] + 1] = dungeon.mapNoTunnel[c->pos[dim_y]][c->pos[dim_x]] + 1;
+      heap_decrease_key_no_replace(&h, p[c->pos[dim_y] + 1][c->pos[dim_x] + 1].hn);
+    }
+  }
+
+  heap_delete(&h);
+}
+
+#define tunnelMovementCost(x, y) ((d->hardness[y][x] / 85) + 1)
+
+void genMapTunnel(struct dungeon *d)
+{
+  static corridor_path_t p[DNGN_SIZE_Y][DNGN_SIZE_X], *c;
+  static uint32_t initialized = 0;
+  heap_t h;
+  uint32_t x, y;
+  int size;
+
+  if (!initialized) 
+  {
+    initialized = 1;
+
+    for (y = 0; y < DNGN_SIZE_Y; y++) 
+    {
+      for (x = 0; x < DNGN_SIZE_X; x++) 
+      {
+        p[y][x].pos[dim_y] = y;
+        p[y][x].pos[dim_x] = x;
+      }
+    }
+  }
+  
+  for (y = 0; y < DNGN_SIZE_Y; y++) 
+  {
+    for (x = 0; x < DNGN_SIZE_X; x++) 
+    {
+      dungeon.mapTunnel[y][x] = 255;
+    }
+  }
+
+  dungeon.mapTunnel[dungeon.pcY][dungeon.pcX] = 0;
+
+  heap_init(&h, tunnel_cmp, NULL);
 
   for (y = 0; y < DNGN_SIZE_Y; y++) 
   {
@@ -51,104 +181,93 @@ void generateDistanceMap(struct dungeon *d, pair_t from, pair_t to, char mapping
     {
       if (dungeon.hardness[y][x] != 255)
       {
-        path[y][x].hn = heap_insert(&h, &path[y][x]);
+        p[y][x].hn = heap_insert(&h, &p[y][x]);
       } 
-      else 
-      {
-        path[y][x].hn = NULL;
-      }
-    }
-  }
-  
-  while ((p = heap_remove_min(&h))) 
-  {
-    p->hn = NULL;
-
-    if ((path[p->pos[dim_y] - 1][p->pos[dim_x]].hn) &&
-        (path[p->pos[dim_y] - 1][p->pos[dim_x]].cost > p->cost + hardnesspair(p->pos)))
-    {
-      path[p->pos[dim_y] - 1][p->pos[dim_x]].cost = p->cost + hardnesspair(p->pos);
-      path[p->pos[dim_y] - 1][p->pos[dim_x]].from[dim_y] = p->pos[dim_y];
-      path[p->pos[dim_y] - 1][p->pos[dim_x]].from[dim_x] = p->pos[dim_x];
-      heap_decrease_key_no_replace(&h, path[p->pos[dim_y] - 1][p->pos[dim_x]].hn);
-    }
-
-    if ((path[p->pos[dim_y]][p->pos[dim_x] - 1].hn) &&
-        (path[p->pos[dim_y]][p->pos[dim_x] - 1].cost > p->cost + hardnesspair(p->pos))) 
-    {
-      path[p->pos[dim_y]][p->pos[dim_x] - 1].cost = p->cost + hardnesspair(p->pos);
-      path[p->pos[dim_y]][p->pos[dim_x] - 1].from[dim_y] = p->pos[dim_y];
-      path[p->pos[dim_y]][p->pos[dim_x] - 1].from[dim_x] = p->pos[dim_x];
-      heap_decrease_key_no_replace(&h, path[p->pos[dim_y]][p->pos[dim_x] - 1].hn);
-    }
-
-    if ((path[p->pos[dim_y]][p->pos[dim_x] + 1].hn) &&
-        (path[p->pos[dim_y]][p->pos[dim_x] + 1].cost > p->cost + hardnesspair(p->pos)))
-    {
-      path[p->pos[dim_y]][p->pos[dim_x] + 1].cost = p->cost + hardnesspair(p->pos);
-      path[p->pos[dim_y]][p->pos[dim_x] + 1].from[dim_y] = p->pos[dim_y];
-      path[p->pos[dim_y]][p->pos[dim_x] + 1].from[dim_x] = p->pos[dim_x];
-      heap_decrease_key_no_replace(&h, path[p->pos[dim_y]][p->pos[dim_x] + 1].hn);
-    }
-
-    if ((path[p->pos[dim_y] + 1][p->pos[dim_x]].hn) &&
-        (path[p->pos[dim_y] + 1][p->pos[dim_x]].cost > p->cost + hardnesspair(p->pos))) 
-    {
-      path[p->pos[dim_y] + 1][p->pos[dim_x]].cost = p->cost + hardnesspair(p->pos);
-      path[p->pos[dim_y] + 1][p->pos[dim_x]].from[dim_y] = p->pos[dim_y];
-      path[p->pos[dim_y] + 1][p->pos[dim_x]].from[dim_x] = p->pos[dim_x];
-      heap_decrease_key_no_replace(&h, path[p->pos[dim_y] + 1][p->pos[dim_x]].hn);
-    }
-
-    if ((path[p->pos[dim_y] + 1][p->pos[dim_x] + 1].hn) &&
-        (path[p->pos[dim_y] + 1][p->pos[dim_x] + 1].cost > p->cost + hardnesspair(p->pos))) 
-    {
-      path[p->pos[dim_y] + 1][p->pos[dim_x] + 1].cost = p->cost + hardnesspair(p->pos);
-      path[p->pos[dim_y] + 1][p->pos[dim_x] + 1].from[dim_y] = p->pos[dim_y];
-      path[p->pos[dim_y] + 1][p->pos[dim_x] + 1].from[dim_x] = p->pos[dim_x];
-      heap_decrease_key_no_replace(&h, path[p->pos[dim_y] + 1][p->pos[dim_x] + 1].hn);
-    }
-
-    if ((path[p->pos[dim_y] - 1][p->pos[dim_x] - 1].hn) &&
-        (path[p->pos[dim_y] - 1][p->pos[dim_x]].cost > p->cost + hardnesspair(p->pos))) 
-    {
-      path[p->pos[dim_y] - 1][p->pos[dim_x] - 1].cost = p->cost + hardnesspair(p->pos);
-      path[p->pos[dim_y] - 1][p->pos[dim_x] - 1].from[dim_y] = p->pos[dim_y];
-      path[p->pos[dim_y] - 1][p->pos[dim_x] - 1].from[dim_x] = p->pos[dim_x];
-      heap_decrease_key_no_replace(&h, path[p->pos[dim_y] - 1][p->pos[dim_x] - 1].hn);
-    }
-
-    if ((path[p->pos[dim_y] + 1][p->pos[dim_x] - 1].hn) &&
-        (path[p->pos[dim_y] + 1][p->pos[dim_x] - 1].cost > p->cost + hardnesspair(p->pos))) 
-    {
-      path[p->pos[dim_y] + 1][p->pos[dim_x] - 1].cost = p->cost + hardnesspair(p->pos);
-      path[p->pos[dim_y] + 1][p->pos[dim_x] - 1].from[dim_y] = p->pos[dim_y];
-      path[p->pos[dim_y] + 1][p->pos[dim_x] - 1].from[dim_x] = p->pos[dim_x];
-      heap_decrease_key_no_replace(&h, path[p->pos[dim_y] + 1][p->pos[dim_x] - 1].hn);
-    }
-
-    if ((path[p->pos[dim_y] - 1][p->pos[dim_x] + 1].hn) &&
-        (path[p->pos[dim_y] - 1][p->pos[dim_x] + 1].cost > p->cost + hardnesspair(p->pos))) 
-    {
-      path[p->pos[dim_y] - 1][p->pos[dim_x] + 1].cost = p->cost + hardnesspair(p->pos);
-      path[p->pos[dim_y] - 1][p->pos[dim_x] + 1].from[dim_y] = p->pos[dim_y];
-      path[p->pos[dim_y] - 1][p->pos[dim_x] + 1].from[dim_x] = p->pos[dim_x];
-      heap_decrease_key_no_replace(&h, path[p->pos[dim_y] - 1][p->pos[dim_x] + 1].hn);
     }
   }
 
-  int n = 0;
-
-  for (x = to[dim_x], y = to[dim_y];
-          (x != from[dim_x]) || (y != from[dim_y]);
-           p = &path[y][x], x = p->from[dim_x], y = p->from[dim_y]) 
+  size = h.size;
+  while ((c = heap_remove_min(&h))) 
   {
-    if (dungeon.hardness[y][x] == 0)
+    if (--size != h.size)
     {
-      mapping[y][x] = (n++ % 10) + '0';
+      exit(1);
     }
 
-    mapping[from[dim_y]][from[dim_x]] = (n % 10) + '0';
+    c->hn = NULL;
+
+    // Up left
+    if ((p[c->pos[dim_y] - 1][c->pos[dim_x] - 1].hn) && 
+	(dungeon.mapTunnel[c->pos[dim_y] - 1][c->pos[dim_x] - 1] > 
+	 dungeon.mapTunnel[c->pos[dim_y]][c->pos[dim_x]] + tunnelMovementCost(c->pos[dim_x], c->pos[dim_y])))
+    {
+      dungeon.mapTunnel[c->pos[dim_y] - 1][c->pos[dim_x] - 1] = 
+	dungeon.mapTunnel[c->pos[dim_y]][c->pos[dim_x]] + tunnelMovementCost(c->pos[dim_x], c->pos[dim_y]);
+      heap_decrease_key_no_replace(&h, p[c->pos[dim_y] - 1][c->pos[dim_x] - 1].hn);
+    }
+    // Up
+    if ((p[c->pos[dim_y] - 1][c->pos[dim_x]].hn) &&
+        (dungeon.mapTunnel[c->pos[dim_y] - 1][c->pos[dim_x]] > 
+	 dungeon.mapTunnel[c->pos[dim_y]][c->pos[dim_x]] + tunnelMovementCost(c->pos[dim_x], c->pos[dim_y]))) 
+    {
+      dungeon.mapTunnel[c->pos[dim_y] - 1][c->pos[dim_x]] = 
+	dungeon.mapTunnel[c->pos[dim_y]][c->pos[dim_x]] + tunnelMovementCost(c->pos[dim_x], c->pos[dim_y]);
+      heap_decrease_key_no_replace(&h, p[c->pos[dim_y] - 1][c->pos[dim_x]    ].hn);
+    }
+    // Up Right
+    if ((p[c->pos[dim_y] - 1][c->pos[dim_x] + 1].hn) &&
+        (dungeon.mapTunnel[c->pos[dim_y] - 1][c->pos[dim_x] + 1] > 
+	 dungeon.mapTunnel[c->pos[dim_y]][c->pos[dim_x]] + tunnelMovementCost(c->pos[dim_x], c->pos[dim_y]))) 
+    {
+      dungeon.mapTunnel[c->pos[dim_y] - 1][c->pos[dim_x] + 1] = 
+	dungeon.mapTunnel[c->pos[dim_y]][c->pos[dim_x]] + tunnelMovementCost(c->pos[dim_x], c->pos[dim_y]);
+      heap_decrease_key_no_replace(&h, p[c->pos[dim_y] - 1][c->pos[dim_x] + 1].hn);
+    }
+    // Left
+    if ((p[c->pos[dim_y]][c->pos[dim_x] - 1].hn) &&
+        (dungeon.mapTunnel[c->pos[dim_y]][c->pos[dim_x] - 1] > 
+	 dungeon.mapTunnel[c->pos[dim_y]][c->pos[dim_x]] + tunnelMovementCost(c->pos[dim_x], c->pos[dim_y])))
+    {
+      dungeon.mapTunnel[c->pos[dim_y]][c->pos[dim_x] - 1] = 
+	dungeon.mapTunnel[c->pos[dim_y]][c->pos[dim_x]] + tunnelMovementCost(c->pos[dim_x], c->pos[dim_y]);
+      heap_decrease_key_no_replace(&h, p[c->pos[dim_y]][c->pos[dim_x] - 1].hn);
+    }
+    // Right
+    if ((p[c->pos[dim_y]][c->pos[dim_x] + 1].hn) &&
+        (dungeon.mapTunnel[c->pos[dim_y]][c->pos[dim_x] + 1] > 
+	 dungeon.mapTunnel[c->pos[dim_y]][c->pos[dim_x]] + tunnelMovementCost(c->pos[dim_x], c->pos[dim_y]))) 
+    {
+      dungeon.mapTunnel[c->pos[dim_y]][c->pos[dim_x] + 1] = 
+	dungeon.mapTunnel[c->pos[dim_y]][c->pos[dim_x]] + tunnelMovementCost(c->pos[dim_x], c->pos[dim_y]);
+      heap_decrease_key_no_replace(&h, p[c->pos[dim_y]    ][c->pos[dim_x] + 1].hn);
+    }
+    // Down Left
+    if ((p[c->pos[dim_y] + 1][c->pos[dim_x] - 1].hn) &&
+        (dungeon.mapTunnel[c->pos[dim_y] + 1][c->pos[dim_x] - 1] > 
+	 dungeon.mapTunnel[c->pos[dim_y]][c->pos[dim_x]] + tunnelMovementCost(c->pos[dim_x], c->pos[dim_y]))) 
+    {
+      dungeon.mapTunnel[c->pos[dim_y] + 1][c->pos[dim_x] - 1] = 
+	dungeon.mapTunnel[c->pos[dim_y]][c->pos[dim_x]] + tunnelMovementCost(c->pos[dim_x], c->pos[dim_y]);
+      heap_decrease_key_no_replace(&h, p[c->pos[dim_y] + 1][c->pos[dim_x] - 1].hn);
+    }
+    // Down
+    if ((p[c->pos[dim_y] + 1][c->pos[dim_x]].hn) &&
+        (dungeon.mapTunnel[c->pos[dim_y] + 1][c->pos[dim_x]] > 
+	 dungeon.mapTunnel[c->pos[dim_y]][c->pos[dim_x]] + tunnelMovementCost(c->pos[dim_x], c->pos[dim_y])))
+    {
+      dungeon.mapTunnel[c->pos[dim_y] + 1][c->pos[dim_x]] = 
+	dungeon.mapTunnel[c->pos[dim_y]][c->pos[dim_x]] + tunnelMovementCost(c->pos[dim_x], c->pos[dim_y]);
+      heap_decrease_key_no_replace(&h, p[c->pos[dim_y] + 1][c->pos[dim_x]].hn);
+    }
+    // Down Right
+    if ((p[c->pos[dim_y] + 1][c->pos[dim_x] + 1].hn) &&
+        (dungeon.mapTunnel[c->pos[dim_y] + 1][c->pos[dim_x] + 1] > 
+	 dungeon.mapTunnel[c->pos[dim_y]][c->pos[dim_x]] + tunnelMovementCost(c->pos[dim_x], c->pos[dim_y]))) 
+    {
+      dungeon.mapTunnel[c->pos[dim_y] + 1][c->pos[dim_x] + 1] = 
+	dungeon.mapTunnel[c->pos[dim_y]][c->pos[dim_x]] + tunnelMovementCost(c->pos[dim_x], c->pos[dim_y]);
+      heap_decrease_key_no_replace(&h, p[c->pos[dim_y] + 1][c->pos[dim_x] + 1].hn);
+    }
   }
 
   heap_delete(&h);

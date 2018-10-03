@@ -1,3 +1,9 @@
+commit 987df7fb8b26aa458b6d55ca982888afeeef03cc
+Author: Ashton <nelson.ashton98@gmail.com>
+Date:   Thu Sep 27 08:00:42 2018 -0500
+
+    Removed duplicate print and 'fixed' tunneling monster pathing
+
 commit 3053d3a2f6771b3c4f270d54a19750bca23d6c75
 Author: Ashton <nelson.ashton98@gmail.com>
 Date:   Thu Sep 27 01:38:14 2018 -0500

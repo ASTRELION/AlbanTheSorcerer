@@ -17,9 +17,6 @@ void initializeDungeon()
   {
     for (j = 0; j < DNGN_SIZE_X; j++)
     {
-      dungeon.terrainDIST_NT[i][j] = ' ';
-      dungeon.terrainDIST_T[i][j] = ' ';
-
       // 255 '-' if an edge, 1 ' ' if rock
       if (i == 0 || i == DNGN_SIZE_Y - 1 ||
 	  j == 0 || j == DNGN_SIZE_X - 1)
@@ -340,7 +337,7 @@ void displayDungeon()
     printf("\n");
   }
 
-  printf("Non-Tunnel Distance Map:\n");
+  /*printf("Non-Tunnel Distance Map:\n");
   for (i = 0; i < DNGN_SIZE_Y; i++)
   {
     for (j = 0; j < DNGN_SIZE_X; j++)
@@ -374,5 +371,5 @@ void displayDungeon()
     }
 
     printf("\n");
-  }
+    }*/
 }

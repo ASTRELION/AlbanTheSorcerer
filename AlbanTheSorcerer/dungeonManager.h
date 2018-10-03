@@ -31,10 +31,11 @@ struct room
 struct dungeon
 {
   int numRooms;
+  int numMonsters;
   struct room rooms[ROOM_MAX_NUM];
   char *terrain[DNGN_SIZE_Y][DNGN_SIZE_X]; // Default
-  char terrainDIST_T[DNGN_SIZE_Y][DNGN_SIZE_X]; // Distance Tunneling
-  char terrainDIST_NT[DNGN_SIZE_Y][DNGN_SIZE_X]; // Distance Non-Tunneling
+  uint8_t mapTunnel[DNGN_SIZE_Y][DNGN_SIZE_X]; // Distance Tunneling
+  uint8_t mapNoTunnel[DNGN_SIZE_Y][DNGN_SIZE_X]; // Distance Non-Tunneling
   uint8_t hardness[DNGN_SIZE_Y][DNGN_SIZE_X];
   uint8_t pcX;
   uint8_t pcY;

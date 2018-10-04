@@ -13,7 +13,7 @@ Dungeon is able to be loaded from dungeon file with switch --load, located in ~/
 Finds the shorted path to every point on the map by using Jeremy's algorithm for tunneling and non-tunneling monsters correctly.
 
 #### Assignment 1.04 : NPCs
-*Completed by Wednesday, September 26th, 2018*
+Player will move to the bottom left corner and moves every turn. Random monsters are generated on the map in random locations. Monsters do not move.
 
 #### Assignment 1.05 : Curses
 *Completed by Wednesday, October 3rd, 2018*

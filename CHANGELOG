@@ -1,3 +1,9 @@
+commit 425586eece5d1a19d9456d4b41f36b0a1a1f32e6
+Author: Ashton <nelson.ashton98@gmail.com>
+Date:   Wed Oct 3 15:37:17 2018 -0500
+
+    Fixed distance gradient for both tunneling and non-tunneling monsters and added --nummon switch
+
 commit 987df7fb8b26aa458b6d55ca982888afeeef03cc
 Author: Ashton <nelson.ashton98@gmail.com>
 Date:   Thu Sep 27 08:00:42 2018 -0500

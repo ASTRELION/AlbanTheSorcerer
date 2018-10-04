@@ -20,12 +20,25 @@
 #define ROOM_MIN_NUM 5 // Min number of rooms
 #define ROOM_MAX_NUM 10 // Max number of rooms
 
+#define NPC_SMART 0x00000001
+#define NPC_TELEPATH 0x00000002
+#define NPC_TUNNEL 0x00000004
+#define NPC_ERRATIC 0x00000008
+
 struct room
 {
   uint8_t x;
   uint8_t y;
   uint8_t dx;
   uint8_t dy;
+};
+
+struct npc
+{
+  uint8_t monsX;
+  uint8_t monsY;
+  uint8_t speed;
+  uint8_t characteristics;
 };
 
 struct dungeon
@@ -37,6 +50,7 @@ struct dungeon
   uint8_t mapTunnel[DNGN_SIZE_Y][DNGN_SIZE_X]; // Distance Tunneling
   uint8_t mapNoTunnel[DNGN_SIZE_Y][DNGN_SIZE_X]; // Distance Non-Tunneling
   uint8_t hardness[DNGN_SIZE_Y][DNGN_SIZE_X];
+  struct npc monsters[50];
   uint8_t pcX;
   uint8_t pcY;
 };
@@ -48,6 +62,7 @@ void loadDungeon();
 void saveDungeon();
 void generateRooms();
 void generatePaths();
+void generateMonsters();
 int distance(struct room room1, struct room room2);
 void displayDungeon();
 

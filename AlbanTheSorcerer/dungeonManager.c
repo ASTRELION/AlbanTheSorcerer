@@ -290,14 +290,33 @@ void generatePaths()
   }
 }
 
+void generateMonsters()
+{
+  int i;
+  for (i = 0; i < dungeon.numMonsters; i++)
+  {
+    struct room rm = dungeon.rooms[(rand() % (dungeon.numRooms - 1)) + 1];
+    int xPos = (rand() % rm.dx) + rm.x;
+    int yPos = (rand() % rm.dy) + rm.y;
+    int chars = rand() & 0xf;
+    
+    struct npc monster = {xPos, yPos, 10, chars};
+    dungeon.monsters[i] = monster;
+  }
+}
+
 void displayDungeon()
 {
+  printf(C_PURPLE "~\t\t" C_CYAN "    *~*~*~*~*~{ Alban The Sorcerer }~*~*~*~*~*\n" C_RESET);
+
   // Print cooridors and walls
   int y, x;
   for (y = 0; y < DNGN_SIZE_Y; y++)
   {
     for (x = 0; x < DNGN_SIZE_X; x++)
     {
+      dungeon.terrain[y][x] = DNGN_ROCK;
+
       if (dungeon.hardness[y][x] == 0)
       {
 	dungeon.terrain[y][x] = DNGN_PATH;
@@ -326,6 +345,16 @@ void displayDungeon()
   // Print characters
   dungeon.terrain[dungeon.pcY][dungeon.pcX] = DNGN_PC;
   
+  int m;
+  for (m = 0; m < dungeon.numMonsters; m++)
+  {
+    struct npc monster = dungeon.monsters[m];
+    char str[8];
+    sprintf(str, "%x", monster.characteristics);
+    dungeon.terrain[monster.monsY][monster.monsX] = str;
+  }
+  
+  // Display board
   int i, j;
   for (i = 0; i < DNGN_SIZE_Y; i++)
   {
@@ -337,39 +366,5 @@ void displayDungeon()
     printf("\n");
   }
 
-  /*printf("Non-Tunnel Distance Map:\n");
-  for (i = 0; i < DNGN_SIZE_Y; i++)
-  {
-    for (j = 0; j < DNGN_SIZE_X; j++)
-    {
-      if (i == dungeon.pcY && j == dungeon.pcX)
-      {
-	printf("@");
-      }
-      else
-      {
-	printf("%c", dungeon.terrainDIST_NT[i][j]);
-      }
-    }
-
-    printf("\n");
-  }
-
-  printf("Tunnel Distance Map:\n");
-  for (i = 0; i < DNGN_SIZE_Y; i++)
-  {
-    for (j = 0; j < DNGN_SIZE_X; j++)
-    {
-      if (i == dungeon.pcY && j == dungeon.pcX)
-      {
-	printf("@");
-      }
-      else
-      {
-	printf("%c", dungeon.terrainDIST_T[i][j]);
-      }
-    }
-
-    printf("\n");
-    }*/
+  printf(C_PURPLE "~\n~\n" C_RESET);
 }
